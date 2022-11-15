@@ -286,9 +286,8 @@ export class ModelBuilder extends Builder {
      * @returns {string}
      */
     private static buildIndexExports(tablesMetadata: ITablesMetadata): string {
-        const sortedMetadata = Object.values(tablesMetadata).sort((a, b) => a.name.localeCompare(b.name));
-        return sortedMetadata
-            .map(t =>  nodeToString(generateIndexExport(toKebabCase(t.name))))
+        return Object.values(tablesMetadata)
+            .map(t =>  nodeToString(generateIndexExport(t.name)))
             .join('\n');
     }
 
