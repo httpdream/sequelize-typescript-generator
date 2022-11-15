@@ -1,5 +1,10 @@
 # sequelize-typescript-generator
-> Automatically generates typescript models compatible with [sequelize-typescript](https://www.npmjs.com/package/sequelize-typescript) library directly from your source database.  
+> Automatically generates typescript models compatible with [sequelize-typescript](https://www.npmjs.com/package/sequelize-typescript) library directly from your source database.
+
+# Different with Original
+- All files using kebabCase
+- sorting in index.ts exports (because file order has changed each generate)
+
 
 ## Table of Contents
 

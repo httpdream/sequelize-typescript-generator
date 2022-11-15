@@ -19,6 +19,10 @@ import {
 
 const foreignKeyDecorator = 'ForeignKey';
 
+function toKebabCase(str: string): string {
+    return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
 /**
  * @class ModelGenerator
  * @constructor
@@ -282,8 +286,9 @@ export class ModelBuilder extends Builder {
      * @returns {string}
      */
     private static buildIndexExports(tablesMetadata: ITablesMetadata): string {
-        return Object.values(tablesMetadata)
-            .map(t =>  nodeToString(generateIndexExport(t.name)))
+        const sortedMetadata = Object.values(tablesMetadata).sort((a, b) => a.name.localeCompare(b.name));
+        return sortedMetadata
+            .map(t =>  nodeToString(generateIndexExport(toKebabCase(t.name))))
             .join('\n');
     }
 
@@ -336,7 +341,8 @@ export class ModelBuilder extends Builder {
                 ModelBuilder.buildTableClassDeclaration(tableMetadata, this.dialect, this.config.strict);
 
             writePromises.push((async () => {
-                const outPath = path.join(outDir, `${tableMetadata.name}.ts`);
+                const fileName = `${toKebabCase(tableMetadata.name)}.ts`;
+                const outPath = path.join(outDir, fileName);
 
                 await fs.writeFile(
                     outPath,

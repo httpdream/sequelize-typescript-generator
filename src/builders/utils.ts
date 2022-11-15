@@ -1,5 +1,9 @@
 import * as ts from 'typescript';
 
+function toKebabCase(str: string) {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
 const printer = ts.createPrinter({
     newLine: ts.NewLineKind.LineFeed,
 });
@@ -32,6 +36,7 @@ export const nodeToString = (node: ts.Node): string => {
  * @returns {string} Named import code
  */
 export const generateNamedImports = (importsSpecifier: string[], moduleSpecifier: string): ts.ImportDeclaration => {
+    moduleSpecifier = toKebabCase(moduleSpecifier);
     return ts.factory.createImportDeclaration(
         undefined,
         undefined,
@@ -55,6 +60,7 @@ export const generateNamedImports = (importsSpecifier: string[], moduleSpecifier
  * @returns {ts.ExportDeclaration}
  */
 export const generateIndexExport = (modelFileName: string): ts.ExportDeclaration => {
+    modelFileName = toKebabCase(modelFileName);
     return ts.factory.createExportDeclaration(
         undefined,
         undefined,

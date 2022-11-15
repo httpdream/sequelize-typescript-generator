@@ -67,6 +67,7 @@
     "src/tests",
     "**/output-models",
     "**/prova.ts",
-    "tmp"
+    "tmp",
+    "build"
   ]
 }
