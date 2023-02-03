@@ -55,6 +55,7 @@ const sequelizeDataTypesMap: { [key: string]: AbstractDataTypeConstructor } = {
     smallint: DataType.SMALLINT,
     mediumint: DataType.MEDIUMINT,
     tinyint: DataType.TINYINT,
+    boolean: DataType.BOOLEAN,
     decimal: DataType.DECIMAL,
     float: DataType.FLOAT,
     double: DataType.DOUBLE,
@@ -93,6 +94,7 @@ const jsDataTypesMap: { [key: string]: string } = {
     smallint: 'number',
     mediumint: 'number',
     tinyint: 'number',
+    boolean: 'boolean',
     decimal: 'string',
     float: 'number',
     double: 'number',
@@ -274,6 +276,9 @@ export class DialectMySQL extends Dialect {
         ) as IColumnMetadataMySQL[];
 
         for (const column of columns) {
+            if (column.COLUMN_TYPE === 'tinyint(1)') {
+                column.DATA_TYPE = 'boolean';
+            }
             // Unknown data type
             if (!this.mapDbTypeToSequelize(column.DATA_TYPE)) {
                 warnUnknownMappingForDataType(column.DATA_TYPE);
